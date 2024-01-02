@@ -1,12 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+
 
 const VideoCard = ({info}) => {
 
 
 
   return (
-    <Link ><div className='w-96 h-96 m-2 p-2 '>
+    <div className='w-96 h-96 m-2 p-2 '>
         <img className='w-96 h-52 rounded-xl' src={info.snippet.thumbnails.high.url} alt="" />
         <div className='mt-2'>
           <ul>
@@ -16,10 +16,16 @@ const VideoCard = ({info}) => {
           </ul>
         </div>
         </div>
-    </Link>
-    
-   
-    
+  )
+}
+
+//high order function
+
+export const AddVideoCard=({info})=>{
+  return(
+    <div className='border border-red-600'>
+      <VideoCard info={info}/>
+    </div>
   )
 }
 

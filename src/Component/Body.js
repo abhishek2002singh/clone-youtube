@@ -7,6 +7,7 @@ import WatchPage from './WatchPage'
 import { Outlet, createBrowserRouter } from 'react-router-dom'
 import SideBar from './SideBar'
 import MainContainer from './MainContainer'
+import About from './About'
 
 
 export const Body = () => {
@@ -31,13 +32,17 @@ export const appLayout=createBrowserRouter([
     children:[
       {
           path :"/",
-          element: <Main />
+          element: <Main />,
       },
 
       {
-        path :"/watch/:resId",
-        element: <WatchPage />
-    }
+        path :"/watch",
+        element: <WatchPage />,
+    },
+    {
+      path :"/about",
+      element: <About />,
+  },
     ],
   },
 ])

@@ -1,16 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsYoutube } from "react-icons/bs";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMicrophone } from "react-icons/fa";
 import { RiVideoAddLine } from "react-icons/ri";
 import { BsBell } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu} from '../utils/appSlice'
+import { Link } from "react-router-dom";
+import {YOUTUBE_SUGGESTIONS_API} from '../utils/constant'
+import {cacheResult} from '../utils/searchSlice'
 
 const Nav=()=> {
 
+  const [searchQuary , setsearchQuary] =useState('')
+  const [suggestions , setsuggestions]=useState([]);
+  const [showSuggestions , setShowSuggestions]=useState(false)
+  // console.log(searchQuary)
   const dispatch=useDispatch();
+
+  const searchCache =useSelector(store=>store.search);
+
+  useEffect(()=>{
+    const timer = setTimeout(()=>
+   {
+    if(searchCache[searchQuary]){
+      setsuggestions(searchCache[searchQuary])
+    }
+    else{
+      Debouncing()
+    }
+     
+  
+  }, 200)
+
+    return ()=>{
+      clearTimeout(timer)
+    }
+
+  } , [searchQuary])
+
+  // *
+  // *key =i,
+  // * - render the component
+  // * - useEffect();
+  // * - start timer => make api call after 200ms
+  // * 
+  // *key - ip
+  // * - destroy the component(useEffect return method)
+  // * - re-render the component
+  // * - useEffect()
+  // * - start timer => make api call after 200ms
+
+  const Debouncing =async()=>{
+    const data=await fetch(YOUTUBE_SUGGESTIONS_API+searchQuary)
+    const json=await data.json()
+    console.log(json[1])
+    setsuggestions(json[1])
+    dispatch(cacheResult({
+      [searchQuary]: json[1],
+    }))
+  }
+
+ 
 
   const toggleMenuHeader =()=>{
       dispatch( toggleMenu());
@@ -30,7 +82,7 @@ const Nav=()=> {
         </div>
         <a href="">
         <div className="flex gap-1 items-center justify-center">
-          <BsYoutube className="text-3xl text-red-500" />
+         <Link to='/'><BsYoutube className="text-3xl text-red-500" /></Link> 
           <span className="text-2xl ">Youtube<sup>IN</sup></span>
         </div>
         </a>
@@ -39,13 +91,33 @@ const Nav=()=> {
         
           <div className="w-full flex  items-center h-10  pr-0 rounded-3xl">
             <div className="w-full flex  items-center ">
+              
               <input
+              
                 type="text"
                 placeholder="Search"
-                className="w-full  focus:outline-none border-2   rounded-l-3xl h-11"
-                // value={searchTerm}
-                // onChange={e=>dispatch(changeSearchTerm(e.target.value))}
+                value={searchQuary}
+
+                className="w-full z-50  focus:outline-none border-2   rounded-l-3xl h-11"
+               
+                onChange={(e)=>setsearchQuary(e.target.value)}
+                onFocus={()=>setShowSuggestions(true)}
+                onBlur={()=>setShowSuggestions(false)}
+                
               />
+              {showSuggestions && (<div className="fixed w-[40%]  mt-14 shadow-xl z-10">
+                <ul className="absolute   w-full border border-black rounded-xl bg-white h-max overflow-y-auto list-none ">
+                  {
+                    suggestions.map((sug)=>(
+                      <li key={sug} className=" hover:bg-black hover:text-white mx-3 my-1 cursor-pointer relative"> {sug}</li>
+                    ))
+                  }
+                  
+                 
+                </ul>
+              </div>)}
+              
+
             </div>
             <button className="h-11 w-16 flex items-center justify-center bg-gray-300 rounded-r-3xl">
               <AiOutlineSearch className="text-xl " />
@@ -55,6 +127,7 @@ const Nav=()=> {
         <div className="text-xl p-3 bg-gray-300 rounded-full">
           <FaMicrophone />
         </div>
+       
      </div>
      <div className="pr-8">
         <div className=" flex gap-8 items-center text-xl">
@@ -66,11 +139,12 @@ const Nav=()=> {
             9+{" "}
           </span>
         </div>
-        <img
+        <Link to='/about'> <img
           src="https://avatars.githubusercontent.com/u/108977081?v=4"
           alt="profile logo"
           className="w-9 h-9 rounded-full"
-        />
+        /></Link>
+       
       </div>
      </div>
      
