@@ -1,6 +1,8 @@
 import React from 'react'
 // import { useParams } from 'react-router-dom'
 import { useSearchParams } from 'react-router-dom'
+import CommentSection from './CommentSection';
+import LiveChat from './LiveChat';
 
 const WatchPage = () => {
 
@@ -11,7 +13,10 @@ const WatchPage = () => {
   // console.log(resId)
 
   return (
-    <div className='m-8 '><iframe
+    <div>
+      <div className='m-8 flex '>
+        <div>
+          <iframe
        className='rounded-xl'
         width="950"
          height="490" 
@@ -22,7 +27,15 @@ const WatchPage = () => {
          alloFullScreen>
         
          </iframe>
+        </div>
+        <div className='w-full'>
+          <LiveChat />
+        </div>
+        
+      </div>
+      <CommentSection />
     </div>
+    
   )
 }
 

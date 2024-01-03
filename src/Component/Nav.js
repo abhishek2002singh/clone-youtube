@@ -19,6 +19,7 @@ const Nav=()=> {
   // console.log(searchQuary)
   const dispatch=useDispatch();
 
+
   const searchCache =useSelector(store=>store.search);
 
   useEffect(()=>{
@@ -62,7 +63,13 @@ const Nav=()=> {
     }))
   }
 
- 
+ const handleClick =(sug)=>{
+ console.log(sug)
+//  setsearchQuary(sug)
+ setShowSuggestions(false);
+ window.location =  setsearchQuary(sug);
+ }
+
 
   const toggleMenuHeader =()=>{
       dispatch( toggleMenu());
@@ -102,14 +109,18 @@ const Nav=()=> {
                
                 onChange={(e)=>setsearchQuary(e.target.value)}
                 onFocus={()=>setShowSuggestions(true)}
-                onBlur={()=>setShowSuggestions(false)}
+                // onBlur={()=>setShowSuggestions(false)}
                 
               />
               {showSuggestions && (<div className="fixed w-[40%]  mt-14 shadow-xl z-10">
                 <ul className="absolute   w-full border border-black rounded-xl bg-white h-max overflow-y-auto list-none ">
                   {
                     suggestions.map((sug)=>(
-                      <li key={sug} className=" hover:bg-black hover:text-white mx-3 my-1 cursor-pointer relative"> {sug}</li>
+                      <li key={sug} className=" hover:bg-black hover:text-white mx-3 my-1 cursor-pointer relative"
+                      
+                          onClick={()=>handleClick(sug)}
+
+                      > {sug}</li>
                     ))
                   }
                   
@@ -119,7 +130,9 @@ const Nav=()=> {
               
 
             </div>
-            <button className="h-11 w-16 flex items-center justify-center bg-gray-300 rounded-r-3xl">
+            <button className="h-11 w-16 flex items-center justify-center bg-gray-300 rounded-r-3xl"
+
+            >
               <AiOutlineSearch className="text-xl " />
             </button>
           </div>

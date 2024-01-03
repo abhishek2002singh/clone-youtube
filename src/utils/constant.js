@@ -8,6 +8,8 @@ export const YOUTUBE_SUGGESTIONS_API="http://suggestqueries.google.com/complete/
 
 
 
+export const COMMENT_API = "https://youtube.googleapis.com/youtube/v3/comments?part=snippet&parentId=UgzDE2tasfmrYLyNkGt4AaABAg&key="+YOUTUBE_API_KEY;
+
 
 
 

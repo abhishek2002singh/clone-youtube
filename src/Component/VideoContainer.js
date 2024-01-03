@@ -8,12 +8,26 @@ import { Link } from 'react-router-dom';
 const VideoContainer = () => {
 
   const [video , setvideo]=useState([])
+  
 
   
 
   useEffect(()=>{
+    // const queryParams = new URLSearchParams(window.location.search);
+    // const query = queryParams.get('query');
+
+  
        youtubeApi();
+    
+      
   }, []);
+
+
+  // const youtubeSearchApi = async (query) => {
+  //   const data = await fetch(`${YOUTUBE_API}&q=${query}`);
+  //   const json = await data.json();
+  //   setvideo(json.items);
+  // };
 
   const youtubeApi =async()=>{
     const data=await fetch(YOUTUBE_API)
@@ -21,6 +35,8 @@ const VideoContainer = () => {
     console.log(json.items)
     setvideo(json.items)
   }
+
+ 
 
   return (
     
